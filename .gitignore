@@ -1,0 +1,11 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Large raw downloads (get them from the UK HPI downloads page)
+data/UK-HPI-full-file-*.csv
+data/UK-HPI-full-file-*.xlsx
+
+.DS_Store
