@@ -44,9 +44,9 @@ london_types <- hpi |> filter(RegionName == "London", !is.na(DetachedIndex), !is
   select(Date, DetachedIndex, FlatIndex) |> pivot_longer(-Date, names_to = "Type", values_to = "Idx")
 p3 <- london_types |> ggplot(aes(Date, Idx, colour = Type)) + geom_line(linewidth = 1) +
   scale_colour_manual(values = c(DetachedIndex = col_london, FlatIndex = col_north), labels = c("Detached houses", "Flats")) +
-  labs(title = "In London, <span style='color:#C8102E'>detached houses</span> overtook flats after 2016",
-       subtitle = "London price index by property type, 2015 = 100",
-       x = NULL, y = "Index (2015 = 100)", caption = "Source: HM Land Registry UK House Price Index") +
+  labs(title = "In London, <span style='color:#C8102E'>detached houses</span> have outgrown flats since 2016",
+       subtitle = "London price index by property type, January 2023 = 100 (the UK HPI base)",
+       x = NULL, y = "Index (Jan 2023 = 100)", caption = "Source: HM Land Registry UK House Price Index") +
   theme_story + theme(legend.position = "right", legend.title = element_blank())
 ggsave("output/viz3_property_types.png", p3, width = 9, height = 5.5, dpi = 300)
 
@@ -62,9 +62,13 @@ p4 <- london_vol |> ggplot(aes(Date, VolMA)) +
 ggsave("output/viz4_volume.png", p4, width = 9, height = 5.5, dpi = 300)
 
 # Viz 5: year-on-year growth heatmap by region and year
-heat <- hpi |> mutate(Year = year(Date), Month = month(Date)) |>
+# YoY is the 12-month change on the monthly series, read at December (and at the latest month
+# for the final, partial year). Lagging the filtered December rows instead would make the
+# final tile a December-to-latest-month change, not a year-on-year one.
+heat <- hpi |> arrange(RegionName, Date) |> group_by(RegionName) |>
+  mutate(YoY = Index / lag(Index, 12) - 1) |> ungroup() |>
+  mutate(Year = year(Date), Month = month(Date)) |>
   filter(Month == 12 | (Year == max(Year) & Month == max(Month[Year == max(Year)]))) |>
-  arrange(RegionName, Date) |> group_by(RegionName) |> mutate(YoY = Index / lag(Index) - 1) |> ungroup() |>
   filter(!is.na(YoY), Year >= 2005) |>
   mutate(RegionName = factor(RegionName, levels = c("London", "South East", "England", "North West", "North East")))
 p5 <- heat |> ggplot(aes(Year, RegionName, fill = YoY)) + geom_tile(colour = "white", linewidth = 0.5) +
