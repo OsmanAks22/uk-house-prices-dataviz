@@ -26,7 +26,7 @@ London is usually seen as the safe bet in UK property. Does the data still suppo
 | `DetachedIndex` | Index for detached houses |
 | `FlatIndex` | Index for flats |
 
-The source is HM Land Registry, licensed under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/). The full data can be downloaded from the monthly release pages in the [UK House Price Index collection](https://www.gov.uk/government/collections/uk-house-price-index-reports) (this extract matches the April 2026 release).
+The source is HM Land Registry, licensed under the [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/). The full data can be downloaded from the monthly release pages in the [UK House Price Index collection](https://www.gov.uk/government/collections/uk-house-price-index-reports). The extract ends at April 2026; later releases revise recent months, so a fresh download will differ slightly.
 
 ## The six charts
 
